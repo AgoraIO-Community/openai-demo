@@ -1,7 +1,8 @@
-export const makeRequest = async (method: string, url: string, credential: string, body?: string) => {
+export const makeRequest = async (method: string, url: string, credential: string, body?: string, clientId?: string) => {
     const headers = new Headers({
         "Authorization": "basic " + credential,
         "Content-Type": "application/json",
+        ...(clientId ? { "X-Client-ID": clientId } : {}),
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": `${method}, OPTIONS`,
     });

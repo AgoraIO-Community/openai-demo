@@ -48,6 +48,8 @@ function Videos(props: {
     useLocalMicrophoneTrack();
   const remoteUsers = useRemoteUsers();
 
+  const [clientId, setClientId] = useState(null);
+
   const [name, setName] = useState("Tadas");
   const [microphone, setMicrophone] = useState("insta360");
   const [speaker, setSpeaker] = useState("default");
@@ -108,6 +110,8 @@ function Videos(props: {
 
       if (response.ok) {
         setIsAIActive(true);
+        const data = await response.json();
+        setClientId(data.clientID);
       } else {
         console.error(`Failed to start AI`);
       }
@@ -121,11 +125,12 @@ function Videos(props: {
       const endpoint = "/api/ai/stop.json";
       const response = await fetch(endpoint, {
         method: "POST",
-        body: JSON.stringify({ channel: channelName }),
+        body: JSON.stringify({ channel: channelName, clientId: clientId }),
       });
 
       if (response.ok) {
         setIsAIActive(false);
+        setClientId(null);
       } else {
         console.error(`Failed to stop AI`);
       }
