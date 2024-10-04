@@ -1,67 +1,44 @@
-# Agora Backend with Astro
+# Agora x OpenAI Demo
 
-A complete backend and front end for your Astro & Agora projects. This repo contains:
+This repository contains a front-end example of a web application that connects users with a conversational AI using Agora's real-time communication technology.
 
-- Token Generator
-- Cloud Recording
-- Speech-To-Text
+## Overview
 
-## Guides
+This project demonstrates how to create a user interface for interacting with an AI agent through voice communication. It utilizes Agora's SDK to handle the audio streaming between the user and the AI.
 
-1. [Build a Token Generator with Astro](docs/TOKENS.md)
-2. [Build a Cloud Recording Backend with Astro](docs/CLOUD_RECORDING.md)
-3. [Build a Real-Time Speech-To-Text Backend with Astro](docs/SPEECH_TO_TEXT.md)
+## Prerequisites
 
-## Get Started
+Before you begin, ensure you have met the following requirements:
 
-1. Create a `.env` file with all the properties within the `.env.example`
-2. Run `npm install` to install all dependecies.
-3. Run `npm run dev` to build and run the project.
+* You have installed the latest version of [Node.js and npm](https://nodejs.org/)
+* You have an Agora account and App ID
 
-## Token Generator Endpoint
+## Installation
 
-```txt
-/api/token.json
+To install Conversational-ai-agent, follow these steps:
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/AgoraIO-Community/openai-demo
+   ```
+
+2. Navigate to the project directory:
+
+   ```bash
+   cd conversational-ai-agent
+   ```
+
+3. Install the dependencies:
+
+   ```bash
+    npm install
+   ```
+
+## Usage
+
+To run the application locally:
+
+```bash
+npm run web
 ```
-
-Body needs to contain channel, role, uid, expireTime.
-
-## Cloud Recording Endpoints
-
-```txt
-/api/recording/start.json
-```
-
-Body needs to contain channel.
-
-```txt
-/api/recording/stop.json
-```
-
-Body needs to contain channel, sid, resourceId.
-
-```txt
-/api/recording/query.json
-```
-
-Body needs to contain sid, resourceId.
-
-## Speech-To-Text Endpoints
-
-```txt
-/api/transcription/start.json
-```
-
-Body needs to contain channel.
-
-```txt
-/api/transcription/stop.json
-```
-
-Body needs to contain taskId, builderToken.
-
-```txt
-/api/transcription/query.json
-```
-
-Body needs to contain taskId, builderToken.
