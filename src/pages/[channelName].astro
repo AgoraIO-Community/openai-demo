@@ -1,10 +1,10 @@
 ---
 import agoraToken from "agora-token";
 
-import Call from "../../components/Call.tsx";
+import Call from "../components/Call.tsx";
 
-import Layout from "../../layouts/Layout.astro";
-import { handleGenerateToken } from "../api/token.json";
+import Layout from "../layouts/Layout.astro";
+import { handleGenerateToken } from "./api/token.json.ts";
 
 const { channelName } = Astro.params;
 // Random user uid. Uid 1,2,3 are reserved for cloud recording and real time transcription.
@@ -20,9 +20,7 @@ const token = await handleGenerateToken({
 
 <Layout title={channelName!}>
   <div class="static m-0 p-0">
-    <p class="absolute z-10 mt-2 ml-12 text-2xl font-bold text-gray-900">
-      {channelName!}
-    </p>
+ 
     <Call
       client:only="react"
       channelName={channelName!}

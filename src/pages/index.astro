@@ -1,14 +1,14 @@
 ---
 import { v4 as uuidv4 } from 'uuid';
 import { AgoraLogo, AgoraOpenAILogo, OpenAILogo } from '../components/icons';
-import Layout from "../layouts/Layout.astro";
+import Layout from '../layouts/Layout.astro';
 
 let error: string = "";
 
 if (Astro.request.method === "POST") {
   try {
     const channelName = uuidv4();
-    return Astro.redirect(`/channel/${channelName}`);
+    return Astro.redirect(`/${channelName}`);
   } catch (error) {
     if (error instanceof Error) {
       error = error.message;
