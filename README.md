@@ -15,7 +15,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## Installation
 
-To install Conversational-ai-agent, follow these steps:
+To install openai-demo, follow these steps:
 
 1. Clone the repository:
 
@@ -26,7 +26,7 @@ To install Conversational-ai-agent, follow these steps:
 2. Navigate to the project directory:
 
    ```bash
-   cd conversational-ai-agent
+   cd openai-demo
    ```
 
 3. Install the dependencies:
