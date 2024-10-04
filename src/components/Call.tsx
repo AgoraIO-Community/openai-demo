@@ -167,7 +167,7 @@ function Videos(props: {
           </div>
 
           {/* Stacked component in bottom right */}
-          <div className="absolute bottom-4 right-4 w-64 rounded-lg overflow-hidden">
+          <div className="absolute border border-neutral-700 bottom-4 right-4 w-64 rounded-lg overflow-hidden">
             <div className="p-4">
               <div className="text-lg font-semibold mb-2">{name}</div>
               <canvas
