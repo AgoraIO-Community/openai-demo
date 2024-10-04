@@ -40,5 +40,5 @@ To install Conversational-ai-agent, follow these steps:
 To run the application locally:
 
 ```bash
-npm run web
+npm run dev
 ```
