@@ -210,7 +210,12 @@ function Videos(props: {
             {remoteUsers.length === 0 ? (
               <div className="text-4xl font-bold">Not Joined</div>
             ) : (
-              <RemoteUser user={remoteUsers[0]} />
+              <div>
+                <div className="text-4xl font-bold text-green-500">
+                  Connected
+                </div>
+                <RemoteUser user={remoteUsers[0]} />
+              </div>
             )}
           </div>
 
