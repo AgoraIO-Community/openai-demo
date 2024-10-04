@@ -34,7 +34,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
   }, []);
 
   return (
-    <div className="w-1/4 h-full bg-neutral-900 text-white p-6 overflow-y-auto">
+    <div className="w-1/4  my-4 mx-4 border border-neutral-700 rounded-lg bg-neutral-900 text-white p-6 overflow-y-auto">
       <h2 className="text-xl font-bold mb-6">Settings</h2>
 
       <div className="mb-6">
@@ -76,13 +76,6 @@ const SettingsPanel: React.FC<SettingsPanelProps> = ({
           ))}
         </select>
       </div>
-      {/* End call button */}
-      <a
-        className="px-5 py-3 text-base font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-500 w-40"
-        href="/"
-      >
-        Leave
-      </a>
     </div>
   );
 };

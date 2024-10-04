@@ -9,6 +9,7 @@ import AgoraRTC, {
 } from "agora-rtc-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import SettingsPanel from "./Settings";
+import { AgoraOpenAILogo } from "./icons";
 
 function Call(props: {
   appId: string;
@@ -153,34 +154,58 @@ function Videos(props: {
   }
 
   if (!localMicrophoneTrack) {
-    return <div>No microphone track available, refresh the page</div>;
+    return <div>No microphone track available, refre</div>;
   }
 
   return (
-    <div className="flex w-full h-screen bg-black text-white">
-      <div className="flex-grow relative">
-        {/* Main content */}
-        <div className="flex items-center justify-center h-full">
-          <div className="text-4xl font-bold">Not Joined</div>
-        </div>
+    <div className="flex flex-col min-h-screen bg-black text-white">
+      <div className="flex flex-grow">
+        <div className="flex-grow m-4 mr-0 border border-neutral-700 rounded-lg bg-neutral-900 relative">
+          {/* Main content */}
+          <div className="flex items-center justify-center h-full">
+            <div className="text-4xl font-bold">Not Joined</div>
+          </div>
 
-        {/* Stacked component in bottom right */}
-        <div className="absolute bottom-4 right-4 w-64 bg-neutral-900 rounded-lg overflow-hidden">
-          <div className="p-4">
-            <div className="text-lg font-semibold mb-2">{name}</div>
-            <canvas ref={canvasRef} className="w-full bg-black rounded" />
+          {/* Stacked component in bottom right */}
+          <div className="absolute bottom-4 right-4 w-64 rounded-lg overflow-hidden">
+            <div className="p-4">
+              <div className="text-lg font-semibold mb-2">{name}</div>
+              <canvas
+                ref={canvasRef}
+                className="w-full h-32 bg-black rounded"
+              />
+            </div>
           </div>
         </div>
+
+        <SettingsPanel
+          name={name}
+          microphone={microphone}
+          speaker={speaker}
+          onNameChange={setName}
+          onMicrophoneChange={setMicrophone}
+          onSpeakerChange={setSpeaker}
+        />
       </div>
 
-      <SettingsPanel
-        name={name}
-        microphone={microphone}
-        speaker={speaker}
-        onNameChange={setName}
-        onMicrophoneChange={setMicrophone}
-        onSpeakerChange={setSpeaker}
-      />
+      <div className="w-full py-2">
+        <div className="flex items-center justify-start px-4">
+          <div className="scale-50 origin-left ml-4">
+            <AgoraOpenAILogo />
+          </div>
+          <span className="ml-2 text-lg">
+            Agora & OpenAI Conversational AI Demo
+          </span>
+          <div className="flex-grow"></div>
+          {/* End call button */}
+          <a
+            className="px-5 py-3 text-base font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-500 w-40"
+            href="/"
+          >
+            Leave
+          </a>
+        </div>
+      </div>
     </div>
   );
 }
