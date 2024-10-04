@@ -1,16 +1,14 @@
 import AgoraRTC, {
   AgoraRTCProvider,
-  LocalVideoTrack,
-  RemoteUser,
   useClientEvent,
   useJoin,
-  useLocalCameraTrack,
   useLocalMicrophoneTrack,
   usePublish,
   useRTCClient,
   useRemoteUsers,
 } from "agora-rtc-react";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import SettingsPanel from "./Settings";
 
 function Call(props: {
   appId: string;
@@ -31,14 +29,6 @@ function Call(props: {
         token={props.token}
         uid={props.uid}
       />
-      <div className="fixed z-10 bottom-0 left-0 right-0 flex justify-center pb-4 space-x-4">
-        <a
-          className="px-5 py-3 text-base font-medium text-center text-white bg-red-400 rounded-lg hover:bg-red-500 w-40"
-          href="/"
-        >
-          End Call
-        </a>
-      </div>
     </AgoraRTCProvider>
   );
 }
@@ -50,21 +40,26 @@ function Videos(props: {
   uid: number;
 }) {
   const { AppID, channelName, token, uid } = props;
-
   const client = useRTCClient();
 
   const { isLoading: isLoadingMic, localMicrophoneTrack } =
     useLocalMicrophoneTrack();
-  const { isLoading: isLoadingCam, localCameraTrack } = useLocalCameraTrack();
   const remoteUsers = useRemoteUsers();
 
-  usePublish([localMicrophoneTrack, localCameraTrack]);
+  const [name, setName] = useState("Tadas");
+  const [microphone, setMicrophone] = useState("insta360");
+  const [speaker, setSpeaker] = useState("default");
+
+  usePublish([localMicrophoneTrack]);
   useJoin({
     appid: AppID,
     channel: channelName,
     token: token,
     uid: uid,
   });
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const animationRef = useRef<number>();
 
   useClientEvent(client, "token-privilege-will-expire", async () => {
     try {
@@ -94,35 +89,98 @@ function Videos(props: {
     }
   });
 
-  const deviceLoading = isLoadingMic || isLoadingCam;
-  if (deviceLoading)
-    return (
-      <div className="flex flex-col items-center pt-40">Loading devices...</div>
+  useEffect(() => {
+    console.log(
+      "useEffect running, localMicrophoneTrack:",
+      localMicrophoneTrack
     );
+    if (!localMicrophoneTrack || !canvasRef.current) {
+      console.log("Returning early from useEffect");
+      return;
+    }
+
+    const audioContext = new AudioContext();
+    const mediaStream = new MediaStream([
+      localMicrophoneTrack.getMediaStreamTrack(),
+    ]);
+    const source = audioContext.createMediaStreamSource(mediaStream);
+    const analyser = audioContext.createAnalyser();
+    analyser.fftSize = 256;
+    source.connect(analyser);
+
+    const canvas = canvasRef.current;
+    const canvasCtx = canvas.getContext("2d")!;
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+
+    const draw = () => {
+      animationRef.current = requestAnimationFrame(draw);
+
+      analyser.getByteFrequencyData(dataArray);
+
+      canvasCtx.fillStyle = "rgba(23, 23, 23, 0.4)"; // Tailwind's bg-neutral-900 with 0.4 opacity
+      canvasCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const barWidth = (canvas.width / bufferLength) * 2.5;
+      let barHeight;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i] / 2;
+
+        // Use a gradient from dark blue to light blue
+        const blueValue = Math.min(255, 50 + barHeight * 1.5);
+        canvasCtx.fillStyle = `rgb(0, ${blueValue}, 255)`;
+        canvasCtx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
+
+        x += barWidth + 1;
+      }
+    };
+
+    draw();
+
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+      source.disconnect();
+      audioContext.close();
+    };
+  }, [localMicrophoneTrack]);
+
+  if (isLoadingMic) {
+    return <div>Loading microphone...</div>;
+  }
+
+  if (!localMicrophoneTrack) {
+    return <div>No microphone track available, refresh the page</div>;
+  }
 
   return (
-    <div className="flex flex-col justify-between w-full h-screen">
-      <div
-        className={`grid gap-1 flex-1 ${
-          remoteUsers.length > 9
-            ? `grid-cols-4`
-            : remoteUsers.length > 4
-            ? `grid-cols-3`
-            : remoteUsers.length >= 1
-            ? `grid-cols-2`
-            : `grid-cols-1`
-        }`}
-      >
-        <LocalVideoTrack
-          key={uid}
-          track={localCameraTrack}
-          play={true}
-          className="w-full h-full"
-        />
-        {remoteUsers.map((user) => (
-          <RemoteUser key={user.uid} user={user} />
-        ))}
+    <div className="flex w-full h-screen bg-black text-white">
+      <div className="flex-grow relative">
+        {/* Main content */}
+        <div className="flex items-center justify-center h-full">
+          <div className="text-4xl font-bold">Not Joined</div>
+        </div>
+
+        {/* Stacked component in bottom right */}
+        <div className="absolute bottom-4 right-4 w-64 bg-neutral-900 rounded-lg overflow-hidden">
+          <div className="p-4">
+            <div className="text-lg font-semibold mb-2">{name}</div>
+            <canvas ref={canvasRef} className="w-full bg-black rounded" />
+          </div>
+        </div>
       </div>
+
+      <SettingsPanel
+        name={name}
+        microphone={microphone}
+        speaker={speaker}
+        onNameChange={setName}
+        onMicrophoneChange={setMicrophone}
+        onSpeakerChange={setSpeaker}
+      />
     </div>
   );
 }

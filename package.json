@@ -17,6 +17,7 @@
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "agora-rtc-react": "^2.3.0",
+    "agora-rtc-sdk-ng": "^4.22.1",
     "agora-token": "^2.0.3",
     "astro": "^4.15.4",
     "google-protobuf": "^3.21.4",

@@ -1,5 +1,6 @@
 ---
 import { v4 as uuidv4 } from 'uuid';
+import { AgoraLogo, AgoraOpenAILogo, OpenAILogo } from '../components/icons';
 import Layout from "../layouts/Layout.astro";
 
 let error: string = "";
@@ -17,16 +18,16 @@ if (Astro.request.method === "POST") {
 ---
 
 <Layout title="Agora & OpenAI">
-  <div class="text-center">
-    <img src="/agora-logo.png" alt="Agora Logo" class="h-8 inline-block mr-2" />
-    <img src="/openai-logo.png" alt="OpenAI Logo" class="h-8 inline-block" />
+  <div class="pt-8 w-full flex justify-center items-center">
+    <div class="mr-16 mt-4 scale-125"><AgoraLogo /></div>
+    <div class="scale-125"><OpenAILogo /></div>
   </div>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-black text-white">
-    <img src="/demo-icon.png" alt="Demo Icon" class="w-24 h-24 mb-8" />
+  <div class="flex flex-col items-center justify-center pt-40 bg-black text-white">
+    <AgoraOpenAILogo />
     <h1 class="text-4xl font-bold mt-8 mb-2">Agora & OpenAI</h1>
     <p class=" text-gray-300 mb-16">Agora Conversational AI demo<br />built in partnership with OpenAI</p>
     
-    <form method="POST" class="w-full max-w-md">
+    <form method="POST" class="w-full max-w-md pb-16">
       <button
         class="bg-sky-300 hover:bg-sky-400 text-black font-bold py-3 px-6 rounded-md w-full flex items-center justify-center"
         type="submit"
