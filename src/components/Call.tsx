@@ -125,7 +125,11 @@ function Videos(props: {
       const endpoint = "/api/ai/stop.json";
       const response = await fetch(endpoint, {
         method: "POST",
-        body: JSON.stringify({ channel: channelName, clientId: clientId }),
+        body: JSON.stringify({
+          channel: channelName,
+          uid: uid,
+          clientId: clientId,
+        }),
       });
 
       if (response.ok) {

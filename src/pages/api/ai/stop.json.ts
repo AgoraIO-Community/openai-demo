@@ -4,7 +4,7 @@ import { makeRequest } from "../../../utils/makeRequest";
 import { sendBadRequest, sendSuccessfulResponse } from "../../../utils/sendResponse";
 
 export async function POST({ request }: APIContext) {
-    const { channel, clientId } = await request.json()
+    const { channel, uid, clientId } = await request.json()
 
     if (!channel) {
         return sendBadRequest("channel is required")
@@ -16,6 +16,7 @@ export async function POST({ request }: APIContext) {
     try {
         await makeRequest("POST", import.meta.env.AI_SERVER_URL + "/stop_agent", credential, JSON.stringify({
             channel_name: channel,
+            uid: uid
         }), clientId);
     } catch (error) {
         console.error("Error stopping agent:", error);
