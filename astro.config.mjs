@@ -9,7 +9,5 @@ import vercel from "@astrojs/vercel/serverless";
 export default defineConfig({
   output: "server",
   integrations: [react(), tailwind()],
-  site: 'https://agoraio-community.github.io',
-  base: 'openai-demo',
   adapter: vercel()
 });
