@@ -127,7 +127,7 @@ function Videos(props: {
         method: "POST",
         body: JSON.stringify({
           channel: channelName,
-          uid: uid,
+          uid: 12,
           clientId: clientId,
         }),
       });
