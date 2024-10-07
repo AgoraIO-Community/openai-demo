@@ -22,5 +22,9 @@ export async function POST({ request }: APIContext) {
 
     console.log(res)
 
-    return sendSuccessfulResponse(res)
+    const responseData = await res.json();
+    return sendSuccessfulResponse({
+        ...responseData,
+        credential: credential
+    });
 }

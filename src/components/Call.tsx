@@ -49,7 +49,7 @@ function Videos(props: {
   const remoteUsers = useRemoteUsers();
 
   const [clientId, setClientId] = useState(null);
-
+  const [credential, setCredential] = useState(null);
   const [name, setName] = useState("Tadas");
   const [microphone, setMicrophone] = useState("insta360");
   const [speaker, setSpeaker] = useState("default");
@@ -112,6 +112,7 @@ function Videos(props: {
         setIsAIActive(true);
         const data = await response.json();
         setClientId(data.clientID);
+        setCredential(data.credential);
       } else {
         console.error(`Failed to start AI`);
       }
@@ -129,12 +130,14 @@ function Videos(props: {
           channel: channelName,
           uid: 12,
           clientId: clientId,
+          credential: credential,
         }),
       });
 
       if (response.ok) {
         setIsAIActive(false);
         setClientId(null);
+        setCredential(null);
       } else {
         console.error(`Failed to stop AI`);
       }
